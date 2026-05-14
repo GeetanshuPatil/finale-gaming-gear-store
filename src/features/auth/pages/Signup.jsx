@@ -3,6 +3,7 @@ import { signupUser } from "../authSlice";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import AuthForm from "../components/AuthForm";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,14 @@ const Signup = () => {
 
   const { loading, error } = useSelector((state) => state.auth);
 
+  const { token } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
+
   const handleSignup = async (data) => {
     const res = await dispatch(signupUser(data));
 
@@ -18,7 +27,7 @@ const Signup = () => {
       toast.success("Account created 🎉", { duration: 1200 });
 
       setTimeout(() => {
-        toast.dismiss(); // 🧹 clears toast
+        toast.dismiss(); //  clears toast
         navigate(location.state?.from || "/");
       }, 1200);
     } else {
@@ -39,7 +48,17 @@ const Signup = () => {
         )}
 
         {/* 🧩 Form */}
-        <AuthForm onSubmit={handleSignup} loading={loading} type="signup" />
+        <AuthForm onSubmit={handleSignup} type="signup" />
+
+        <button
+          form="auth-form"
+          type="submit"
+          disabled={loading}
+          className="mt-4 w-full py-2.5 rounded-xl bg-black text-white text-sm 
+             hover:bg-gray-800 transition disabled:opacity-60"
+        >
+          {loading ? "Loading..." : "Create Account"}
+        </button>
 
         {/* 🔗 Redirect */}
         <p className="mt-5 text-sm text-center text-gray-600">

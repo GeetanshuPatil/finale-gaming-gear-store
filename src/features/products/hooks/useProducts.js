@@ -36,7 +36,7 @@ if (search) {
 
   data = data.filter((p) => {
     const searchableText = `
-      ${p.name}
+      ${p.title}
       ${p.brand}
       ${p.category}
       ${p.features?.join(" ")}

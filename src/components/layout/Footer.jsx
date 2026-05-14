@@ -1,7 +1,18 @@
 // src/components/Footer.jsx
+import { useSelector } from "react-redux";
+
+import { toggleTheme } from "../../features/theme/themeSlice";
+import { selectThemeMode } from "../../features/theme/themeSelector";
+
+
+
+
 const Footer = () => {
+
+  const mode = useSelector(selectThemeMode);
+
   return (
-   <footer className="bg-gray-300 border-t border-gray-200 mt-10">
+   <footer className="dark:bg-gray-900 dark:border-t  dark:border-black bg-gray-300  border-gray-200 mt-10">
   <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600">
     
     {/* Left */}

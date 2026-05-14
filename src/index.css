@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: sans-serif;
+}
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

@@ -1,90 +1,105 @@
 // features/products/components/ProductCard.jsx
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart } from "../../../cart/cartSlice";
+import { addCartItem, addToCart } from "../../../cart/cartSlice";
 import {
+  addWishlistItem,
   addToWishlist,
-  removeFromWishlist,
+  removeWishlistItem,
 } from "../../../wishlist/wishlistSlice";
 import toast from "react-hot-toast";
 import { Heart } from "lucide-react";
 
+import { toggleTheme } from "../../../theme/themeSlice";
+import { selectThemeMode } from "../../../theme/themeSelector";
+
+
+
+
 const ProductCard = ({ product }) => {
+  const mode = useSelector(selectThemeMode);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const wishlistItems = useSelector((state) => state.wishlist.items);
-  const isWishlisted = wishlistItems.some((item) => item.id === product.id);
-
+  const token = useSelector((state) => state.auth.token);
+  const isWishlisted = wishlistItems.some(
+  (item) => item.id === product.id
+);
   return (
-    <div
-  className="relative flex flex-col h-full bg-gradient-to-b from-gray-900 to-gray-950 border border-gray-800 rounded-2xl p-4 hover:shadow-lg hover:shadow-green-500/10 transition group"
->
-  {/* ❤️ HEART (FIXED POSITION) */}
-  <button
-    onClick={(e) => {
-      e.stopPropagation();
+    <div className="relative flex flex-col h-full bg-gray-100 dark:bg-gradient-to-b from-gray-900 to-gray-950 border dark:border-gray-800 border-gray-300 rounded-2xl p-4 hover:shadow-lg hover:shadow-green-500/10 transition group">
+      {/* ❤️ HEART (FIXED POSITION) */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
 
-      if (isWishlisted) {
-        dispatch(removeFromWishlist(product.id));
-        toast("Removed from wishlist ❌");
-      } else {
-        dispatch(addToWishlist(product));
-        toast.success("Added to wishlist");
-      }
-    }}
-    className="absolute top-45 right-4 z-10 
+          if (isWishlisted) {
+            dispatch(removeWishlistItem(product.id));
+            toast("Removed from wishlist ❌");
+          } else {
+            if (token) {
+              dispatch(addWishlistItem(product.id));
+            } else {
+              dispatch(addToWishlist(product));
+            }
+            toast.success("Added to wishlist");
+          }
+        }}
+        className="absolute top-45 right-4 z-10 
                p-1 rounded-full 
-               fill-white hover:text-green-500 text-white
+               dark:fill-white fill-gray-400 hover:text-green-500 text-gray-300
                transition-all duration-200 hover:scale-110"
-  >
-    <Heart
-      className={`w-6 h-6 transition ${
-        isWishlisted
-          ? "fill-green-500 text-green-500 "
-          : " fill-white"
-      }`}
-    />
-  </button>
+      >
+        <Heart
+          className={`w-6 h-6 transition ${
+            isWishlisted ? "fill-green-500 text-green-500 " : " dark:fill-white fill-gray-300"
+          }`}
+        />
+      </button>
 
-  {/* CLICKABLE AREA */}
-  <div
-    onClick={() => navigate(`/product/${product.id}`)}
-    className="cursor-pointer flex flex-col"
-  >
-    {/* IMAGE */}
-    <div className="h-28 flex items-center justify-center bg-white rounded-xl mb-3">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="h-24 object-contain mx-auto"
-      />
+      {/* CLICKABLE AREA */}
+      <div
+        onClick={() => navigate(`/product/${product.id}`)}
+        className="cursor-pointer flex flex-col"
+      >
+        {/* IMAGE */}
+        <div className="h-28 flex items-center justify-center bg-white rounded-xl mb-3">
+          <img
+            src={product.imageUrl}
+            alt={product.title}
+            className="h-24 object-contain mx-auto"
+          />
+        </div>
+
+        {/* NAME (CLAMPED) */}
+        <p className="text-sm text-gray-950 font-bold font- dark:text-gray-200 dark:font-bold line-clamp-2 min-h-[40px]">
+          {product.title}
+        </p>
+
+        {/* PRICE */}
+        <p className="text-base font-semibold text-green-500 mt-1">
+          ₹{product.price.toLocaleString("en-IN")}
+        </p>
+      </div>
+
+      {/* BUTTON */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          if (token) {
+            dispatch(addCartItem(product.id));
+          } else {
+            dispatch(addToCart(product));
+          }
+          toast.success("Added to cart");
+        }}
+        className="mt-3 w-full py-2 rounded-xl 
+               bg-green-600  text-white text-sm font-bold
+               hover:bg-green-50 hover:text-black hover:shadow-md   transition  active:scale-95"
+      >
+        Add to Cart
+      </button>
     </div>
-
-    {/* NAME (CLAMPED) */}
-    <p className="text-sm text-gray-200 font-medium line-clamp-2 min-h-[40px]">
-      {product.name}
-    </p>
-
-    {/* PRICE */}
-    <p className="text-base font-semibold text-green-500 mt-1">
-      ₹{product.price.toLocaleString("en-IN")}
-    </p>
-  </div>
-
-  {/* BUTTON */}
-  <button
-    onClick={(e) => {
-      e.stopPropagation();
-      dispatch(addToCart(product));
-      toast.success("Added to cart");
-    }}
-    className="mt-3 w-full py-2 rounded-xl 
-               bg-green-500 text-black text-sm font-bold
-               hover:bg-green-50   transition  active:scale-95"
-  >
-    Add to Cart
-  </button>
-</div>
   );
 };
 

@@ -24,45 +24,35 @@ const ProductFilters = () => {
   // debounce search
   const debouncedSearch = useDebounce(searchInput, 500);
 
-  // Initialize Redux from URL
-  useEffect(() => {
-    dispatch(setSearch(urlSearch));
-    dispatch(setCategory(urlCategory));
-    dispatch(setSort(urlSort));
-  }, [dispatch, urlSearch, urlCategory, urlSort]);
+useEffect(() => {
+  dispatch(setCategory(urlCategory));
+  dispatch(setSort(urlSort));
+}, []);
 
   // Sync debounced search → Redux
   useEffect(() => {
     dispatch(setSearch(debouncedSearch));
   }, [debouncedSearch, dispatch]);
 
-  // Sync Redux + search → URL
-  useEffect(() => {
-    setParams({
-      search: debouncedSearch || "",
-      category,
-      sort,
-    });
-  }, [debouncedSearch, category, sort, setParams]);
+useEffect(() => {
+  setParams(
+  {
+    search: debouncedSearch || "",
+    category,
+    sort,
+  },
+  { replace: true }
+);
+}, [debouncedSearch, category, sort]);
 
   return (
-    <div className="bg-[#0f172a] border border-gray-800 rounded-2xl p-4 md:p-5 shadow-md">
+    <div className="bg-gray-100 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-950 
+                border border-gray-300 dark:border-gray-800 
+                rounded-2xl p-4 md:p-5 shadow-md transition">
 
   <div className="flex flex-col md:flex-row md:items-center gap-4">
 
-    {/* 🔍 Search */}
-    <div className="flex-1">
-      <input
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-        placeholder="🔍 Search gaming gear..."
-        className="w-full px-4 py-2.5 rounded-xl text-sm 
-                   bg-[#020617] text-gray-200 border border-gray-700
-                   placeholder-gray-500
-                   focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:bg-gray-200 focus:text-gray-900
-                   transition"
-      />
-    </div>
+  
 
     {/* Controls */}
     <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
@@ -72,8 +62,16 @@ const ProductFilters = () => {
         value={category}
         onChange={(e) => dispatch(setCategory(e.target.value))}
         className="px-4 py-2.5 rounded-xl text-sm 
-                   bg-[#020617] text-gray-200 border border-gray-700
-                   focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500
+                   
+                   bg-white dark:bg-[#020617]
+                   text-gray-900 dark:text-gray-200
+                   
+                   border border-gray-300 dark:border-gray-700
+                   
+                   focus:outline-none 
+                   focus:ring-2 focus:ring-green-500 
+                   focus:border-green-500
+                   
                    transition w-full sm:w-44"
       >
         <option value="all">All Categories</option>
@@ -87,8 +85,16 @@ const ProductFilters = () => {
         value={sort}
         onChange={(e) => dispatch(setSort(e.target.value))}
         className="px-4 py-2.5 rounded-xl text-sm 
-                   bg-[#020617] text-gray-200 border border-gray-700
-                   focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500
+                   
+                   bg-white dark:bg-[#020617]
+                   text-gray-900 dark:text-gray-200
+                   
+                   border border-gray-300 dark:border-gray-700
+                   
+                   focus:outline-none 
+                   focus:ring-2 focus:ring-green-500 
+                   focus:border-green-500
+                   
                    transition w-full sm:w-44"
       >
         <option value="default">Sort by</option>

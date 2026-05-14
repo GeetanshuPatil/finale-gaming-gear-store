@@ -4,12 +4,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../authSlice";
 import AuthForm from "../components/AuthForm";
+import { useEffect } from "react";
 
 const Login = () => {
   const dispatch = useDispatch();
-   const navigate = useNavigate();
-   const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { token } = useSelector((state) => state.auth);
   const { loading, error } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   const handleLogin = async (data) => {
     const res = await dispatch(loginUser(data));
@@ -18,7 +26,6 @@ const Login = () => {
       toast.success("Login successful 🎉");
 
       navigate(location.state?.from || "/");
-      
     } else {
       toast.error("Invalid credentials ❌");
     }
@@ -35,7 +42,17 @@ const Login = () => {
           <p className="text-sm text-red-500 text-center mb-4">{error}</p>
         )}
 
-        <AuthForm onSubmit={handleLogin} loading={loading} />
+        <AuthForm onSubmit={handleLogin} type="login" />
+
+        <button
+          form="auth-form"
+          type="submit"
+          disabled={loading}
+          className="mt-4 w-full py-2.5 rounded-xl bg-black text-white text-sm 
+             hover:bg-gray-800 transition disabled:opacity-60"
+        >
+          {loading ? "Loading..." : "Login"}
+        </button>
       </div>
     </div>
   );

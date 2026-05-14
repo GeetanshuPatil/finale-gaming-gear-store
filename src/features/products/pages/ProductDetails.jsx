@@ -1,29 +1,35 @@
 // features/products/pages/ProductDetails.jsx
 import toast from "react-hot-toast";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState, } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { convertToINR, formatINR } from "../../../shared/utils/currency";
+import { formatINR } from "../../../shared/utils/currency";
 import BackButton from "../../../shared/components/BackButton";
 import { Heart } from "lucide-react";
 import { fetchProductById, clearSelectedProduct } from "../productSlice";
 import {
   addToWishlist,
-  removeFromWishlist,
+  addWishlistItem,
+  removeWishlistItem,
 } from "../../wishlist/wishlistSlice";
-import { addToCart } from "../../cart/cartSlice";
+import { addCartItem, addToCart } from "../../cart/cartSlice";
 import ProductDetailsSkeleton from "../components/ProductDetailsSkeleton";
+import { toggleTheme } from "../../../features/theme/themeSlice";
+import { selectThemeMode } from "../../../features/theme/themeSelector";
 
 const ProductDetails = () => {
+  const mode = useSelector(selectThemeMode);
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const wishlistItems = useSelector((state) => state.wishlist.items);
+  const token = useSelector((state) => state.auth.token);
   const [activeImage, setActiveImage] = useState(null);
 
   const { selectedProduct, detailsLoading, error } = useSelector(
     (state) => state.products
   );
+
   const isWishlisted = wishlistItems.some(
     (item) => item.id === selectedProduct?.id
   );
@@ -37,8 +43,8 @@ const ProductDetails = () => {
   }, [id, dispatch]);
 
   useEffect(() => {
-    if (selectedProduct?.image) {
-      setActiveImage(selectedProduct.image); // ✅ use full string
+    if (selectedProduct?.imageUrl) {
+      setActiveImage(selectedProduct.imageUrl); // ✅ use full string
     }
   }, [selectedProduct]);
 
@@ -54,23 +60,57 @@ const ProductDetails = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 text-white">
-      <BackButton />
+      <div className="mb-6">
+        <BackButton />
+      </div>
 
       <div className="grid md:grid-cols-2 gap-10 mt-6">
         {/* 🖼️ Image Section */}
-        <div className="flex flex-col gap-4">
-          <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-800 flex items-center justify-center overflow-hidden">
-            <img
-              src={
-                activeImage ||
-                selectedProduct.image ||
-                "https://via.placeholder.com/400"
-              }
-              alt={selectedProduct.name}
-              className="max-h-[260px] object-contain transition duration-500 hover:scale-105"
-            />
-          </div>
-        </div>
+<div className="flex flex-col gap-4">
+  <div className="relative bg-white rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center overflow-hidden">
+    
+    {/* ❤️ Wishlist Button */}
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+
+        if (isWishlisted) {
+          dispatch(removeWishlistItem(selectedProduct.id));
+          toast("Removed from wishlist ❌");
+        } else {
+          if (token) {
+            dispatch(addWishlistItem(selectedProduct.id));
+          } else {
+            dispatch(addToWishlist(selectedProduct));
+          }
+          toast.success("Added to wishlist");
+        }
+      }}
+      className="absolute top-3 right-3 z-10 
+                 p-2 rounded-full bg-black/40 backdrop-blur-sm
+                 text-gray-300 hover:text-green-500
+                 transition-all duration-200 hover:scale-110"
+    >
+      <Heart
+        className={`w-6 h-6 transition ${
+          isWishlisted
+            ? "fill-green-500 text-green-500"
+            : "text-gray-300"
+        }`}
+      />
+    </button>
+
+    <img
+      src={
+        activeImage ||
+        selectedProduct.imageUrl ||
+        "https://via.placeholder.com/400"
+      }
+      alt={selectedProduct.title}
+      className="max-h-[260px] object-contain transition duration-500 hover:scale-105"
+    />
+  </div>
+</div>
 
         {/* 📄 Info Section */}
         <div className="flex flex-col gap-5">
@@ -80,38 +120,15 @@ const ProductDetails = () => {
           </span>
 
           {/* Title */}
-          <h1 className="text-xl md:text-2xl font-semibold text-white leading-snug">
-            {selectedProduct.name}
+          <h1 className="text-xl md:text-2xl font-semibold  text-green-500 leading-snug">
+            {selectedProduct.title}
           </h1>
 
-          {/* wishlist */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-
-              if (isWishlisted) {
-                dispatch(removeFromWishlist(selectedProduct.id));
-                toast("Removed from wishlist ❌");
-              } else {
-                dispatch(addToWishlist(selectedProduct));
-                toast.success("Added to wishlist");
-              }
-            }}
-            className="absolute bottom-23 right-7 z-10 
-                   p-1 rounded-full 
-                   text-gray-400 hover:text-green-500 
-                   transition-all duration-200 hover:scale-110"
-          >
-            <Heart
-              className={`w-7 h-9 transition ${
-                isWishlisted ? "fill-green-500 text-green-500" : "text-gray-400"
-              }`}
-            />
-          </button>
+          
 
           {/* Rating */}
           <div className="flex items-center gap-3">
-            <span className="bg-gray-300 text-black text-xs px-2 py-1 rounded-md font-medium">
+            <span className="  bg-gray-100 shadow-md   text-black text-xs px-2 py-1 rounded-md font-medium">
               ⭐ {selectedProduct.rating}
             </span>
 
@@ -122,7 +139,7 @@ const ProductDetails = () => {
 
           {/* 💰 Price */}
           <div className="flex items-center gap-4">
-            <p className="text-2xl font-bold text-green-400">
+            <p className="text-2xl font-bold dark:text-gray-50 text-gray-800">
               {formatINR(selectedProduct.price)}
             </p>
 
@@ -148,10 +165,14 @@ const ProductDetails = () => {
             {/* Add to Cart */}
             <button
               onClick={() => {
-                dispatch(addToCart(selectedProduct));
+                if (token) {
+                  dispatch(addCartItem(selectedProduct.id));
+                } else {
+                  dispatch(addToCart(selectedProduct));
+                }
                 toast.success("Added to cart 🛒");
               }}
-              className="flex-1 px-6 py-3 rounded-xl  text-black bg-green-500
+              className="flex-1 px-6 py-3 rounded-xl   text-white bg-green-600
                       hover:bg-white hover:text-black  transition active:scale-95 font-medium shadow-md"
             >
               Add to Cart
@@ -160,8 +181,8 @@ const ProductDetails = () => {
             {/* Buy Now */}
             <button
               onClick={() => toast("Coming soon 🚀")}
-              className="flex-1 px-6 py-3 rounded-xl border bg-gray-800 text-gray-100 
-                     hover:bg-gray-50 hover:text-gray-950 transition font-medium"
+              className="flex-1 px-6 py-3 rounded-xl  bg-gray-600 text-gray-100 
+                     hover:bg-gray-50 hover:text-gray-950 shadow-md transition font-medium"
             >
               Buy Now
             </button>

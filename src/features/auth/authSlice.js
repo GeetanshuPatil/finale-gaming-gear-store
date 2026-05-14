@@ -3,9 +3,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginAPI, signupAPI } from "./authServices";
 
-// 🔐 Load from localStorage (important)
-const tokenFromStorage = localStorage.getItem("token");
-
 // ✅ LOGIN
 // ✅ Async thunk
 export const loginUser = createAsyncThunk(
@@ -56,15 +53,17 @@ const authSlice = createSlice({
 
   reducers: {
     logout: (state) => {
+      // clear redux state
       state.user = null;
       state.token = null;
+      state.error = null;
+      state.loading = false;
 
-      // ✅ CLEAR storage
+      // clear localStorage
       localStorage.removeItem("user");
       localStorage.removeItem("token");
     },
   },
-
   extraReducers: (builder) => {
     builder
 
@@ -73,20 +72,24 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+
+      //login successful block
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
 
         state.user = {
-          id: action.payload.id,
-          username: action.payload.username,
+          email: action.payload.email,
+          name: action.payload.name,
+          role: action.payload.role,
         };
 
         state.token = action.payload.token;
 
-        // ✅ SAVE to localStorage
-        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("user", JSON.stringify(state.user));
         localStorage.setItem("token", action.payload.token);
       })
+
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Login failed";
@@ -98,19 +101,23 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+
+      //signup successfull block
       .addCase(signupUser.fulfilled, (state, action) => {
         state.loading = false;
+
         state.user = {
-          id: action.payload.id,
-          username: action.payload.username,
+          email: action.payload.email,
+          name: action.payload.name,
+          role: action.payload.role,
         };
 
         state.token = action.payload.token;
 
-        // ✅ SAVE here too
-        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("user", JSON.stringify(state.user));
         localStorage.setItem("token", action.payload.token);
       })
+
       .addCase(signupUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Signup failed";

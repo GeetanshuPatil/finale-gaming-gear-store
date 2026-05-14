@@ -13,10 +13,14 @@ import Cart from "../features/cart/pages/Cart";
 import Login from "../features/auth/pages/Login";
 import Signup from "../features/auth/pages/Signup";
 
-import PaymentPortal from "../features/payments/pages/PaymentPortal";
+
 import OrderSuccess from "../features/orders/pages/orderSuccessful";
 import Wishlist from "../features/wishlist/pages/Wishlist";
 import HomePage from "../features/home/HomePage";
+import Checkout from "../features/checkout/pages/Checkout";
+import ProductsPage from "../features/products/pages/ProductsPage";
+import SearchPage from "../features/search/SearchPage";
+
 
 const router = createBrowserRouter([
   {
@@ -26,6 +30,12 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
       },
+      {
+        path: "/productsPage", element: <ProductsPage />
+      },
+      {
+        path:"/search", element: <SearchPage/>
+      },
       
       { path: "/product/:id", element: <ProductDetails /> },
 
@@ -34,10 +44,10 @@ const router = createBrowserRouter([
 
       { path: "/cart", element: <Cart /> },
       {
-        path: "/payment",
+        path: "/checkout",
         element: (
           <ProtectedRoute>
-            <PaymentPortal />
+            <Checkout />
           </ProtectedRoute>
         ),
       },
