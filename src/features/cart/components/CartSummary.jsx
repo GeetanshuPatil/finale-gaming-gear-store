@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { formatINR } from "../../../shared/utils/currency";
 import { clearBackendCart } from "../cartSlice";
 import toast from "react-hot-toast";
+import { selectCartTotal } from "../cartSelectors";
 
 
 const CartSummary = () => {
@@ -101,7 +102,7 @@ const CartSummary = () => {
                
                bg-green-600 
                
-               text-white dark:text-black
+               text-white 
                
                text-sm font-medium
                

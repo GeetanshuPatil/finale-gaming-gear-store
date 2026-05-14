@@ -2,103 +2,224 @@
   <a href="https://gaming-gear-shop.geetanshupatil2004.workers.dev/">
     <img src="https://img.shields.io/badge/Live-Demo-green" />
   </a>
+
   <img src="https://img.shields.io/badge/React-18-blue" />
   <img src="https://img.shields.io/badge/Redux-Toolkit-purple" />
+  <img src="https://img.shields.io/badge/TailwindCSS-3.0-38B2AC" />
   <img src="https://img.shields.io/badge/Deployed-Cloudflare-orange" />
 </p>
-🎮 Gaming Gear Shop
 
-## 📸 Screenshots
+# GearZone – Gaming Gear Ecommerce Store
 
-![Home Page](./screenshots/screenshot01.png)
-![Product List](./screenshots/screenshot02.png)
-![Product Details](./screenshots/screenshot03.png)
-![Cart](./screenshots/screenshot04.png)
+A modern and responsive gaming gear ecommerce frontend built with **React, Redux Toolkit, Tailwind CSS, and React Router**.
 
-A modern e-commerce web application for browsing and purchasing gaming peripherals like mice, keyboards, and headsets. Built with a focus on performance, scalability, and real-world UX patterns.
+Designed with a premium gaming-inspired UI, mobile-first responsiveness, dark/light theme support, advanced product search, cart & wishlist management, and smooth user experience.
 
-🚀 Live Demo
+---
 
-👉 https://gaming-gear-shop.geetanshupatil2004.workers.dev/
+# 📸 Screenshots
 
-✨ Features
-🔍 Smart Search
-Debounced search for better performance
-Multi-field search (name, brand, category, features, specs)
-URL-synced filters for shareable search states
-🛍️ Product Browsing
-Clean product grid layout
-Category-based filtering
-Price sorting (Low → High / High → Low)
-Skeleton loaders for smooth UX
-📄 Product Details
-Detailed product descriptions
-Features & specifications section
-Wishlist functionality
-Add to cart support
-❤️ Wishlist & Cart
-Add/remove products from wishlist
-Add products to cart with toast notifications
-🧠 Tech Stack
-Frontend: React + Vite
-State Management: Redux Toolkit
-Routing: React Router
-Styling: Tailwind CSS
-Icons: Lucide React
-Notifications: React Hot Toast
-Deployment: Cloudflare Pages
-⚡ Performance Optimizations
-useMemo for optimized filtering
-Debounced search input
-Cached API calls (Redux thunk logic)
-Lazy rendering with skeleton loaders
+## 🏠 Home Page
+![Home Page](./screenshots/home.png)
 
-## 📂 Project Structure
+## 🛒 Cart Page
+![Cart](./screenshots/cart.png)
 
-```src/
-├── app/ # Redux store setup
-├── features/ # Feature-based modules
-│ ├── products/ # Product listing & details
-│ ├── cart/ # Cart functionality
-│ ├── wishlist/ # Wishlist functionality
-├── shared/ # Reusable components & utilities
-│ ├── components/
-│ ├── utils/
-├── hooks/ # Custom React hooks
+---
+
+# 🚀 Features
+
+## 🛍️ Ecommerce Functionality
+
+- Product listing page
+- Product details page
+- Add to cart
+- Wishlist management
+- Quantity controls
+- Order summary
+- Checkout flow
+- Order success page
+
+---
+
+## 🔍 Advanced Search
+
+- Debounced search
+- Multi-keyword search
+
+Search by:
+- Title
+- Description
+- Brand
+- Category
+
+- Mobile dedicated search page
+
+---
+
+## 🎨 UI / UX
+
+- Fully responsive design
+- Mobile-first navigation
+- Sliding hamburger menu
+- Dark / Light theme toggle
+- Sticky navbar
+- Smooth hover animations
+- Empty states
+- Loading states
+- Modern card layouts
+
+---
+
+## ⚡ State Management
+
+- Redux Toolkit
+- Async thunks
+- Persistent cart & wishlist
+- Theme persistence
+- Optimized product caching
+
+---
+
+# 🛠️ Tech Stack
+
+- React.js
+- Redux Toolkit
+- React Router DOM
+- Tailwind CSS
+- Vite
+- Lucide React
+- React Hot Toast
+
+---
+
+# 📱 Responsive Design
+
+Optimized for:
+
+- Mobile devices
+- Tablets
+- Desktop screens
+
+---
+
+# 🌗 Theme Support
+
+- Dark Theme
+- Light Theme
+- Persistent theme preference
+
+---
+
+# 📂 Project Structure
+
+```bash
+src/
+ ├── features/
+ │    ├── auth/
+ │    ├── cart/
+ │    ├── products/
+ │    ├── wishlist/
+ │    └── theme/
+ │
+ ├── shared/
+ │    └── components/
+ │
+ ├── hooks/
+ │
+ ├── pages/
+ │
+ └── app/
 ```
 
-# Clone the repo
-git clone https://github.com/your-username/gaming-gear-shop.git
+---
 
-# Navigate into project
-cd gaming-gear-shop
+# ⚙️ Installation
 
-# Install dependencies
+## Clone the repository
+
+```bash
+git clone https://github.com/GeetanshuPatil/finale-gaming-gear-store
+```
+
+## Navigate to project folder
+
+```bash
+cd gearzone
+```
+
+## Install dependencies
+
+```bash
 npm install
+```
 
-# Run development server
+## Start development server
+
+```bash
 npm run dev
-🏗️ Build for Production
+```
+
+---
+
+# 🏗️ Build For Production
+
+```bash
 npm run build
-🌐 Deployment
+```
 
-This project is deployed using Cloudflare Pages with a global CDN for fast performance.
+## Preview production build
 
-📈 Future Improvements
-Product reviews & ratings
-Authentication (Login / Signup)
-Backend integration (Node.js / Express)
-Payment gateway (Stripe)
-Product comparison feature
-Search suggestions & autocomplete
-🙌 Acknowledgements
-Inspired by modern e-commerce platforms
-Built as part of a personal portfolio project
-📬 Contact
+```bash
+npm run preview
+```
 
-If you’d like to connect or collaborate:
+---
 
-👤 Author
-Geetanshu Patil
-GitHub: https://github.com/GeetanshuPatil  
-LinkedIn: www.linkedin.com/in/geetanshu-patil-923637375
+# 🌐 Live Demo
+
+Add your deployed link here:
+
+```txt
+https://your-live-demo-link.com
+```
+
+---
+
+# 📸 Screenshots
+
+Add screenshots of:
+
+- Homepage
+- Product page
+- Cart page
+- Mobile view
+- Dark mode
+
+---
+
+# ✨ Future Improvements
+
+- Payment gateway integration
+- Backend integration
+- User profile section
+- Product reviews
+- Order tracking
+- Admin dashboard
+- Authentication with JWT
+
+---
+
+# 👨‍💻 Author
+
+## Geetanshu Patil
+
+- GitHub: https://github.com/GeetanshuPatil
+- LinkedIn: https://www.linkedin.com/in/geetanshu-patil-923637375/
+- Portfolio: https://portfolio-geet1.vercel.app/
+
+---
+
+# 📄 License
+
+This project is for learning and portfolio purposes.

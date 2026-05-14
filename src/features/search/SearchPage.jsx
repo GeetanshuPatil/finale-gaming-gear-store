@@ -33,10 +33,10 @@ const SearchPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 transition">
+    <div className="min-h-screen pt-3 bg-white dark:bg-gray-950 transition">
       {/* TOP BAR */}
       <div
-        className="sticky top-0 z-40
+        className="sticky top-16 z-30
                       bg-white dark:bg-gray-900
                       border-b border-gray-200 dark:border-gray-800
                       px-4 py-3"
@@ -81,7 +81,7 @@ const SearchPage = () => {
       </div>
 
       {/* RESULTS */}
-      <div className="p-4">
+      <div className="p-4 ">
         {!debouncedSearch.trim() ? (
           <div className="text-center mt-20 text-gray-500 dark:text-gray-400">
             Start searching for gaming gear 🔍
