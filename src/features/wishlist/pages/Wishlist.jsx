@@ -9,14 +9,11 @@ import toast from "react-hot-toast";
 import { toggleTheme } from "../../../features/theme/themeSlice";
 import { selectThemeMode } from "../../../features/theme/themeSelector";
 
-
-
 const Wishlist = () => {
   const items = useSelector(selectWishlistItems);
   const mode = useSelector(selectThemeMode);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
-  
 
   if (items.length === 0) {
     return <p className="p-4 text-gray-500">Your wishlist is empty </p>;
@@ -28,7 +25,9 @@ const Wishlist = () => {
         <BackButton />
       </div>
 
-      <h1 className="text-xl md:text-2xl text-green-500  font-semibold mb-6">My Wishlist</h1>
+      <h1 className="text-xl md:text-2xl text-green-500  font-semibold mb-6">
+        My Wishlist
+      </h1>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {items.map((item) => (
@@ -60,7 +59,11 @@ const Wishlist = () => {
             {/* Remove */}
             <button
               onClick={() => {
-                dispatch(removeWishlistItem(item.id));
+                if (token) {
+                  dispatch(removeWishlistItem(item.id));
+                } else {
+                  dispatch(removeWishlistLocal(item.id));
+                }
                 toast("Removed from wishlist");
               }}
               className="mt-3 text-xs hover:text-gray-400 text-red-500 transition"
