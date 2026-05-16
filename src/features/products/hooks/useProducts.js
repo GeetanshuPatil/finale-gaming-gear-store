@@ -1,11 +1,8 @@
-import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../productSlice";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";import { fetchProducts } from "../productSlice";
 import { useSearchParams } from "react-router-dom";
-import { fetchCart } from "../../cart/cartSlice";
 
 export const useProducts = () => {
-  const dispatch = useDispatch();
   const [params] = useSearchParams();
 
   const {
@@ -21,17 +18,7 @@ export const useProducts = () => {
   const category = params.get("category") || "all";
   const sort = params.get("sort") || "default";
 
-  // ✅ FETCH PRODUCTS
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
 
-  // ✅ FETCH CART ONLY IF LOGGED IN
-  useEffect(() => {
-    if (token) {
-      dispatch(fetchCart());
-    }
-  }, [token, dispatch]);
 
   // 🔥 filtered products
   const products = useMemo(() => {
@@ -74,9 +61,6 @@ export const useProducts = () => {
     return data;
   }, [items, search, category, sort]);
 
-  console.log("items:", items);
-  console.log("category:", category);
-  console.log("filtered:", products);
   return {
     products,
     loading: listLoading,
