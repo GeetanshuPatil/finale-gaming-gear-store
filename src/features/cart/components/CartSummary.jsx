@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { convertToINR } from "../../../shared/utils/currency";
 import { useNavigate } from "react-router-dom";
 import { formatINR } from "../../../shared/utils/currency";
-import { clearBackendCart } from "../cartSlice";
+import { clearBackendCart, resetCart } from "../cartSlice";
 import toast from "react-hot-toast";
 import { selectCartTotal } from "../cartSelectors";
 
