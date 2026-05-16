@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../productSlice";
 import { useSearchParams } from "react-router-dom";
+import { fetchCart } from "../../cart/cartSlice";
 
 export const useProducts = () => {
   const dispatch = useDispatch();
@@ -12,18 +13,25 @@ export const useProducts = () => {
     listLoading,
     error,
   } = useSelector((state) => state.products);
+   const token = useSelector((state) => state.auth.token);
+
 
   // 🌐 URL state
   const search = params.get("search") || "";
   const category = params.get("category") || "all";
   const sort = params.get("sort") || "default";
 
-  // 📦 fetch once
+  // ✅ FETCH PRODUCTS
   useEffect(() => {
-    if (items.length === 0) {
-      dispatch(fetchProducts());
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  // ✅ FETCH CART ONLY IF LOGGED IN
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchCart());
     }
-  }, [dispatch, items.length]);
+  }, [token, dispatch]);
 
   // 🔥 filtered products
   const products = useMemo(() => {
@@ -31,11 +39,11 @@ export const useProducts = () => {
 
     // ✅ search (FIXED)
     // ✅ search (UPGRADED)
-if (search) {
-  const query = search.toLowerCase();
+    if (search) {
+      const query = search.toLowerCase();
 
-  data = data.filter((p) => {
-    const searchableText = `
+      data = data.filter((p) => {
+        const searchableText = `
       ${p.title}
       ${p.brand}
       ${p.category}
@@ -45,9 +53,9 @@ if (search) {
         .join(" ")}
     `.toLowerCase();
 
-    return searchableText.includes(query);
-  });
-}
+        return searchableText.includes(query);
+      });
+    }
 
     // ✅ category
     if (category !== "all") {

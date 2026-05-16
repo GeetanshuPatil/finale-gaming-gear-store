@@ -1,10 +1,15 @@
 // features/products/components/ProductCard.jsx
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { addCartItem, addToCart } from "../../../cart/cartSlice";
+import {
+  addCartItem,
+  addToCartLocal,
+} from "../../../cart/cartSlice";
 import {
   addWishlistItem,
   addToWishlist,
+  addWishlistLocal,
+  removeWishlistLocal,
   removeWishlistItem,
 } from "../../../wishlist/wishlistSlice";
 import toast from "react-hot-toast";
@@ -13,9 +18,6 @@ import { Heart } from "lucide-react";
 import { toggleTheme } from "../../../theme/themeSlice";
 import { selectThemeMode } from "../../../theme/themeSelector";
 
-
-
-
 const ProductCard = ({ product }) => {
   const mode = useSelector(selectThemeMode);
 
@@ -23,9 +25,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const token = useSelector((state) => state.auth.token);
-  const isWishlisted = wishlistItems.some(
-  (item) => item.id === product.id
-);
+  const isWishlisted = wishlistItems.some((item) => item.id === product.id);
   return (
     <div className="relative flex flex-col h-full bg-gray-100 dark:bg-gradient-to-b from-gray-900 to-gray-950 border dark:border-gray-800 border-gray-300 rounded-2xl p-4 hover:shadow-lg hover:shadow-green-500/10 transition group">
       {/* ❤️ HEART (FIXED POSITION) */}
@@ -34,14 +34,28 @@ const ProductCard = ({ product }) => {
           e.stopPropagation();
 
           if (isWishlisted) {
-            dispatch(removeWishlistItem(product.id));
+            if (token) {
+              // instant UI
+              dispatch(removeWishlistLocal(product.id));
+
+              // backend sync
+              dispatch(removeWishlistItem(product.id));
+            } else {
+              dispatch(removeWishlistLocal(product.id));
+            }
+
             toast("Removed from wishlist ❌");
           } else {
             if (token) {
+              // instant UI
+              dispatch(addWishlistLocal(product));
+
+              // backend sync
               dispatch(addWishlistItem(product.id));
             } else {
               dispatch(addToWishlist(product));
             }
+
             toast.success("Added to wishlist");
           }
         }}
@@ -52,7 +66,9 @@ const ProductCard = ({ product }) => {
       >
         <Heart
           className={`w-6 h-6 transition ${
-            isWishlisted ? "fill-green-500 text-green-500 " : " dark:fill-white fill-gray-300"
+            isWishlisted
+              ? "fill-green-500 text-green-500 "
+              : " dark:fill-white fill-gray-300"
           }`}
         />
       </button>
@@ -86,11 +102,17 @@ const ProductCard = ({ product }) => {
       <button
         onClick={(e) => {
           e.stopPropagation();
+
           if (token) {
+            // 1. instant UI
+            dispatch(addToCartLocal(product));
+
+            // 2. backend sync (NO UI overwrite)
             dispatch(addCartItem(product.id));
           } else {
-            dispatch(addToCart(product));
+            dispatch(addToCartLocal(product));
           }
+
           toast.success("Added to cart");
         }}
         className="mt-3 w-full py-2 rounded-xl 

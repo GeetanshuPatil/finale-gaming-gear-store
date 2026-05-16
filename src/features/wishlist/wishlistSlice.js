@@ -82,6 +82,20 @@ const wishlistSlice = createSlice({
     resetWishlist: (state) => {
       state.items = [];
     },
+
+    addWishlistLocal: (state, action) => {
+      const product = action.payload;
+
+      const exists = state.items.find((i) => i.id === product.id);
+
+      if (!exists) {
+        state.items.push(product);
+      }
+    },
+
+    removeWishlistLocal: (state, action) => {
+      state.items = state.items.filter((item) => item.id !== action.payload);
+    },
   },
 
   extraReducers: (builder) => {
@@ -107,25 +121,7 @@ const wishlistSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ADD
-      .addCase(addWishlistItem.fulfilled, (state, action) => {
-        state.items = (action.payload.items || []).map((item) => ({
-          id: item.product.id,
-          title: item.product.title,
-          price: item.product.price,
-          imageUrl: item.product.imageUrl,
-        }));
-      })
-
-      // REMOVE
-      .addCase(removeWishlistItem.fulfilled, (state, action) => {
-        state.items = (action.payload.items || []).map((item) => ({
-          id: item.product.id,
-          title: item.product.title,
-          price: item.product.price,
-          imageUrl: item.product.imageUrl,
-        }));
-      })
+     
 
       // CLEAR
       .addCase(clearBackendWishlist.fulfilled, (state) => {
@@ -134,7 +130,12 @@ const wishlistSlice = createSlice({
   },
 });
 
-export const { addToWishlist, removeFromWishlist, resetWishlist } =
-  wishlistSlice.actions;
+export const {
+  addToWishlist,
+  removeFromWishlist,
+  resetWishlist,
+  addWishlistLocal,
+  removeWishlistLocal,
+} = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;

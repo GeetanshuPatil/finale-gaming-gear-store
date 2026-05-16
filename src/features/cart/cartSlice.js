@@ -97,16 +97,19 @@ const cartSlice = createSlice({
   initialState,
 
   reducers: {
-    addToCart: (state, action) => {
-      const item = action.payload;
+    addToCartLocal: (state, action) => {
+      const product = action.payload;
 
-      const existing = state.items.find((i) => i.id === item.id);
+      const existing = state.items.find((i) => i.id === product.id);
 
       if (existing) {
         existing.quantity += 1;
       } else {
         state.items.push({
-          ...item,
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          imageUrl: product.imageUrl,
           quantity: 1,
         });
       }
@@ -161,22 +164,7 @@ const cartSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ addCartItem
-      .addCase(addCartItem.fulfilled, (state, action) => {
-        state.items = normalizeCartItems(action.payload.items);
-      })
-
-      .addCase(increaseCartItem.fulfilled, (state, action) => {
-        state.items = normalizeCartItems(action.payload.items);
-      })
-
-      .addCase(decreaseCartItem.fulfilled, (state, action) => {
-        state.items = normalizeCartItems(action.payload.items);
-      })
-
-      .addCase(removeCartItem.fulfilled, (state, action) => {
-        state.items = normalizeCartItems(action.payload.items);
-      })
+      
 
       .addCase(clearBackendCart.fulfilled, (state, action) => {
         state.items = [];
@@ -185,6 +173,7 @@ const cartSlice = createSlice({
 });
 export const {
   addToCart,
+  addToCartLocal,
   increaseLocalCartItem,
   decreaseLocalCartItem,
   removeLocalCartItem,

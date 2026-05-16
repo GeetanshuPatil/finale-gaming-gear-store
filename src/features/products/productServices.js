@@ -1,23 +1,12 @@
 // features/products/productServices.js
-
+import API from "../../api/axios";
 
 export const fetchAllProductsAPI = async () => {
-  const res = await fetch("https://gaming-gear-java-backend.onrender.com/products");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch products");
-  }
-
-  const data = await res.json();
-  return data;
+  const res = await API.get("/products");
+  return res.data;
 };
 
 export const fetchProductByIdAPI = async (id) => {
-  const res = await fetch(`https://gaming-gear-java-backend.onrender.com/products/${id}`);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch product");
-  }
-
-  return res.json();
+  const res = await API.get(`/products/${id}`);
+  return res.data;
 };
