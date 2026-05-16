@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { selectWishlistItems } from "../wishlistSelectors";
-import { removeWishlistItem } from "../wishlistSlice";
+import { removeWishlistItem, removeWishlistLocal } from "../wishlistSlice";
 import { Link } from "react-router-dom";
 import { addCartItem, addToCart } from "../../cart/cartSlice";
 import { convertToINR, formatINR } from "../../../shared/utils/currency";
