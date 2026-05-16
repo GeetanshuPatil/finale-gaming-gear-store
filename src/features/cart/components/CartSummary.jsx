@@ -8,7 +8,9 @@ import { clearBackendCart } from "../cartSlice";
 import toast from "react-hot-toast";
 import { selectCartTotal } from "../cartSelectors";
 
+
 const CartSummary = () => {
+  const token = useSelector((state) => state.auth.token);
   const total = useSelector(selectCartTotal);
   const navigate = useNavigate();
   const dispatch = useDispatch();
