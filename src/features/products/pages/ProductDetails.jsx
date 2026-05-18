@@ -1,6 +1,6 @@
 // features/products/pages/ProductDetails.jsx
 import toast from "react-hot-toast";
-import { useEffect, useState, } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { formatINR } from "../../../shared/utils/currency";
@@ -9,16 +9,17 @@ import { Heart } from "lucide-react";
 import { fetchProductById, clearSelectedProduct } from "../productSlice";
 import {
   addToWishlist,
+  removeFromWishlist,
   addWishlistItem,
   removeWishlistItem,
 } from "../../wishlist/wishlistSlice";
-import { addCartItem, addToCart } from "../../cart/cartSlice";
+import { addCartItem, addToCartLocal } from "../../cart/cartSlice";
 import ProductDetailsSkeleton from "../components/ProductDetailsSkeleton";
-import { toggleTheme } from "../../../features/theme/themeSlice";
-import { selectThemeMode } from "../../../features/theme/themeSelector";
+// import { toggleTheme } from "../../../features/theme/themeSlice";
+// import { selectThemeMode } from "../../../features/theme/themeSelector";
 
 const ProductDetails = () => {
-  const mode = useSelector(selectThemeMode);
+  // const mode = useSelector(selectThemeMode);
 
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -66,51 +67,60 @@ const ProductDetails = () => {
 
       <div className="grid md:grid-cols-2 gap-10 mt-6">
         {/* 🖼️ Image Section */}
-<div className="flex flex-col gap-4">
-  <div className="relative bg-white rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center overflow-hidden">
-    
-    {/* ❤️ Wishlist Button */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
+        <div className="flex flex-col gap-4">
+          <div className="relative bg-white rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center overflow-hidden">
+            {/* ❤️ Wishlist Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
 
-        if (isWishlisted) {
-          dispatch(removeWishlistItem(selectedProduct.id));
-          toast("Removed from wishlist ❌");
-        } else {
-          if (token) {
-            dispatch(addWishlistItem(selectedProduct.id));
-          } else {
-            dispatch(addToWishlist(selectedProduct));
-          }
-          toast.success("Added to wishlist");
-        }
-      }}
-      className="absolute top-3 right-3 z-10 
+                if (isWishlisted) {
+                  // instant UI
+                  dispatch(removeFromWishlist(selectedProduct.id));
+
+                  // backend sync
+                  if (token) {
+                    dispatch(removeWishlistItem(selectedProduct.id));
+                  }
+
+                  toast("Removed from wishlist ❌");
+                } else {
+                  // instant UI
+                  dispatch(addToWishlist(selectedProduct));
+
+                  // backend sync
+                  if (token) {
+                    dispatch(addWishlistItem(selectedProduct.id));
+                  }
+
+                  toast.success("Added to wishlist");
+                }
+              }}
+              className="absolute top-3 right-3 z-10 
                  p-2 rounded-full bg-black/40 backdrop-blur-sm
                  text-gray-300 hover:text-green-500
                  transition-all duration-200 hover:scale-110"
-    >
-      <Heart
-        className={`w-6 h-6 transition ${
-          isWishlisted
-            ? "fill-green-500 text-green-500"
-            : "text-gray-300"
-        }`}
-      />
-    </button>
+            >
+              <Heart
+                className={`w-6 h-6 transition ${
+                  isWishlisted
+                    ? "fill-green-500 text-green-500"
+                    : "text-gray-300"
+                }`}
+              />
+            </button>
 
-    <img
-      src={
-        activeImage ||
-        selectedProduct.imageUrl ||
-        "https://via.placeholder.com/400"
-      }
-      alt={selectedProduct.title}
-      className="max-h-[260px] object-contain transition duration-500 hover:scale-105"
-    />
-  </div>
-</div>
+            <img
+              src={
+                activeImage ||
+                selectedProduct.imageUrl ||
+                "https://via.placeholder.com/400"
+              }
+              alt={selectedProduct.title}
+              className="max-h-[260px] object-contain transition duration-500 hover:scale-105"
+            />
+          </div>
+        </div>
 
         {/* 📄 Info Section */}
         <div className="flex flex-col gap-5">
@@ -123,8 +133,6 @@ const ProductDetails = () => {
           <h1 className="text-xl md:text-2xl font-semibold  text-green-500 leading-snug">
             {selectedProduct.title}
           </h1>
-
-          
 
           {/* Rating */}
           <div className="flex items-center gap-3">
@@ -165,11 +173,14 @@ const ProductDetails = () => {
             {/* Add to Cart */}
             <button
               onClick={() => {
+                // instant UI
+                dispatch(addToCartLocal(selectedProduct));
+
+                // backend sync
                 if (token) {
                   dispatch(addCartItem(selectedProduct.id));
-                } else {
-                  dispatch(addToCart(selectedProduct));
                 }
+
                 toast.success("Added to cart 🛒");
               }}
               className="flex-1 px-6 py-3 rounded-xl   text-white bg-green-600

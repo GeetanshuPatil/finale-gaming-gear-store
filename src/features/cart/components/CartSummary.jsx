@@ -8,7 +8,6 @@ import { clearBackendCart, resetCart } from "../cartSlice";
 import toast from "react-hot-toast";
 import { selectCartTotal } from "../cartSelectors";
 
-
 const CartSummary = () => {
   const token = useSelector((state) => state.auth.token);
   const total = useSelector(selectCartTotal);
@@ -20,12 +19,15 @@ const CartSummary = () => {
   };
 
   const handleClearCart = () => {
+    // instant UI update
+    dispatch(resetCart());
+
+    // backend sync
     if (token) {
       dispatch(clearBackendCart());
-    } else {
-      dispatch(resetCart());
     }
-    toast.success("Cart cleared ");
+
+    toast.success("Cart cleared");
   };
 
   return (

@@ -48,7 +48,7 @@ useEffect(() => {
   return (
     <div className="bg-gray-100 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-950 
                 border border-gray-300 dark:border-gray-800 
-                rounded-2xl p-4 md:p-5 shadow-md transition">
+                rounded-2xl p-4 md:p-5  transition">
 
   <div className="flex flex-col md:flex-row md:items-center gap-4">
 

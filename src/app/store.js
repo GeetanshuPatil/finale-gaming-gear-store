@@ -11,7 +11,7 @@ export const store = configureStore({
     products: productReducer,
     cart: cartReducer,
     auth: authReducer,
-     wishlist: wishlistReducer,
-     theme: themeReducer,
+    wishlist: wishlistReducer,
+    theme: themeReducer,
   },
 });

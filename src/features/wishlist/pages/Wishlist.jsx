@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectWishlistItems } from "../wishlistSelectors";
 import { removeWishlistItem, removeWishlistLocal } from "../wishlistSlice";
 import { Link } from "react-router-dom";
-import { addCartItem, addToCart } from "../../cart/cartSlice";
+import { addCartItem, addToCartLocal } from "../../cart/cartSlice";
 import { convertToINR, formatINR } from "../../../shared/utils/currency";
 import BackButton from "../../../shared/components/BackButton";
 import toast from "react-hot-toast";
@@ -59,11 +59,13 @@ const Wishlist = () => {
             {/* Remove */}
             <button
               onClick={() => {
+
+                dispatch(removeWishlistLocal(item.id));
+
                 if (token) {
                   dispatch(removeWishlistItem(item.id));
-                } else {
-                  dispatch(removeWishlistLocal(item.id));
-                }
+                } 
+
                 toast("Removed from wishlist");
               }}
               className="mt-3 text-xs hover:text-gray-400 text-red-500 transition"
@@ -74,11 +76,12 @@ const Wishlist = () => {
             {/* Add to Cart */}
             <button
               onClick={() => {
+
+                dispatch(addToCartLocal(item));
+
                 if (token) {
                   dispatch(addCartItem(item.id));
-                } else {
-                  dispatch(addToCart(item));
-                }
+                } 
                 toast.success("Added to cart");
               }}
               className="mt-3 w-full py-2 rounded-xl 

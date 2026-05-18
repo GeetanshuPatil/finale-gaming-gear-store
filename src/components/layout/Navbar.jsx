@@ -249,7 +249,7 @@ const Navbar = () => {
             <Search className="w-5 h-5" />
           </button>
 
-          {/* ❤️ Wishlist */}
+          {/* Wishlist */}
           <Link to="/wishlist" className="relative">
             <Heart className="w-5 h-5" />
 
@@ -260,7 +260,7 @@ const Navbar = () => {
             )}
           </Link>
 
-          {/* 🛒 Cart */}
+          {/* Cart */}
           <Link to="/cart" className="relative">
             <ShoppingCart className="w-5 h-5" />
 

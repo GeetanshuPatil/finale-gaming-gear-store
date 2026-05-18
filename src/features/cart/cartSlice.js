@@ -172,7 +172,6 @@ const cartSlice = createSlice({
   },
 });
 export const {
-  addToCart,
   addToCartLocal,
   increaseLocalCartItem,
   decreaseLocalCartItem,

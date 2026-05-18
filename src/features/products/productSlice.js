@@ -46,7 +46,7 @@ const initialState = {
   items: [],
   selectedProduct: null,
 
-  listLoading: true,
+  listLoading: false,
   detailsLoading: false,
 
   listError: null,

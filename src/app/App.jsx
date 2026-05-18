@@ -14,9 +14,12 @@ const App = () => {
 
   const token = useSelector((state) => state.auth.token);
 
+  const products = useSelector((state) => state.products.items);
+  
   const productsLoading = useSelector((state) => state.products.listLoading);
+  
+  const appLoading = productsLoading && products.length === 0;
 
-  const appLoading = productsLoading;
 
   useEffect(() => {
     // products for everyone
