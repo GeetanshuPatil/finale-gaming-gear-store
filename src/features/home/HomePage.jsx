@@ -32,7 +32,7 @@ const HomePage = () => {
         <img
           src={heroImg}
           alt="gaming setup"
-          className="w-full h-[500px] md:h-[550px] object-cover opacity-60"
+          className="w-full h-[600px] md:h-[650px] object-cover opacity-60"
         />
 
         {/* Overlay */}

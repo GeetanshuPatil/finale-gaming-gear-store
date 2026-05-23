@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
 import toast from "react-hot-toast";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { Heart, ShoppingCart, Moon, Sun, Menu, X, Search } from "lucide-react";
 import { resetCart } from "../../features/cart/cartSlice";
 import { resetWishlist } from "../../features/wishlist/wishlistSlice";
@@ -11,6 +11,9 @@ import { selectThemeMode } from "../../features/theme/themeSelector";
 import { useState } from "react";
 
 const Navbar = () => {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   const { user, token } = useSelector((state) => state.auth);
 
   const cartItems = useSelector((state) => state.cart?.items || []);
@@ -44,7 +47,13 @@ const Navbar = () => {
   const mode = useSelector(selectThemeMode);
 
   return (
-    <nav className="dark:bg-gray-900 bg-gray-200 dark:border-b dark:border-gray-800 sticky top-0 z-50">
+    <nav
+      className={`top-0 left-0 w-full z-50 transition ${
+        isHome
+          ? "absolute bg-transparent border-none"
+          : "sticky dark:bg-gray-900 bg-gray-200 dark:border-b dark:border-gray-800"
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* LEFT SECTION */}
 
@@ -53,10 +62,11 @@ const Navbar = () => {
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setMenuOpen(true)}
-            className="md:hidden p-2 rounded-lg
-             text-gray-700 dark:text-gray-200
-             hover:bg-gray-200 dark:hover:bg-gray-800
-             transition"
+            className={`md:hidden p-2 rounded-lg transition ${
+              isHome
+                ? "text-white hover:bg-white/10"
+                : "text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800"
+            }`}
           >
             <Menu size={24} />
           </button>
@@ -71,7 +81,13 @@ const Navbar = () => {
             />
 
             <span className="text-lg font-semibold hidden sm:flex items-center">
-              <span className="dark:text-white text-black p-1 ">Gear</span>
+              <span
+                className={`${
+                  isHome ? "text-white" : "dark:text-white text-black"
+                } p-1`}
+              >
+                Gear
+              </span>
               <span className="text-green-500">Zone</span>
             </span>
           </Link>
@@ -140,8 +156,12 @@ const Navbar = () => {
             end
             className={({ isActive }) =>
               `relative px-3 py-1 text-sm transition ${
-                isActive
-                  ? "dark:text-green-400  text-gray-700"
+                isHome
+                  ? isActive
+                    ? "text-white"
+                    : "text-gray-200 hover:text-green-400"
+                  : isActive
+                  ? "dark:text-green-400 text-gray-700"
                   : "dark:hover:text-gray-200 dark:text-green-500 text-gray-700 hover:text-green-500"
               }`
             }
@@ -150,9 +170,9 @@ const Navbar = () => {
               <>
                 Home
                 <span
-                  className={`absolute left-0 -bottom-1 h-[2px] bg-gray-700 dark:bg-green-400 transition-all duration-300 ${
-                    isActive ? "w-full" : "w-0"
-                  }`}
+                  className={`absolute left-0 -bottom-1 h-[2px] ${
+                    isHome ? "bg-green-400" : "bg-gray-700 dark:bg-green-400"
+                  } transition-all duration-300 ${isActive ? "w-full" : "w-0"}`}
                 />
               </>
             )}
@@ -161,9 +181,13 @@ const Navbar = () => {
           <NavLink
             to="/wishlist"
             className={({ isActive }) =>
-              `relative flex items-center justify-center px-3 py-1 transition ${
-                isActive
-                  ? "dark:text-green-400  text-gray-700"
+              `relative px-3 py-1 text-sm transition ${
+                isHome
+                  ? isActive
+                    ? "text-white"
+                    : "text-gray-200 hover:text-green-400"
+                  : isActive
+                  ? "dark:text-green-400 text-gray-700"
                   : "dark:hover:text-gray-200 dark:text-green-500 text-gray-700 hover:text-green-500"
               }`
             }
@@ -192,9 +216,13 @@ const Navbar = () => {
           <NavLink
             to="/cart"
             className={({ isActive }) =>
-              `relative flex items-center justify-center px-3 py-1 transition ${
-                isActive
-                  ? "dark:text-green-400  text-gray-700"
+              `relative px-3 py-1 text-sm transition ${
+                isHome
+                  ? isActive
+                    ? "text-white"
+                    : "text-gray-200 hover:text-green-400"
+                  : isActive
+                  ? "dark:text-green-400 text-gray-700"
                   : "dark:hover:text-gray-200 dark:text-green-500 text-gray-700 hover:text-green-500"
               }`
             }
@@ -236,21 +264,28 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Nav */}
-
-        <div className="flex md:hidden items-center gap-4">
+        <div className="flex md:hidden items-center gap-3">
           {/* SEARCH */}
           <button
             onClick={() => navigate("/search")}
-            className="p-2 rounded-lg
-             text-gray-700 dark:text-gray-200
-             hover:bg-gray-200 dark:hover:bg-gray-800
-             transition"
+            className={`p-2 rounded-lg transition ${
+              isHome
+                ? "text-white hover:bg-white/10"
+                : "text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800"
+            }`}
           >
             <Search className="w-5 h-5" />
           </button>
 
           {/* Wishlist */}
-          <Link to="/wishlist" className="relative">
+          <Link
+            to="/wishlist"
+            className={`relative p-1 transition ${
+              isHome
+                ? "text-white hover:text-green-400"
+                : "text-gray-700 dark:text-gray-200 hover:text-green-500"
+            }`}
+          >
             <Heart className="w-5 h-5" />
 
             {wishlistItems.length > 0 && (
@@ -261,11 +296,18 @@ const Navbar = () => {
           </Link>
 
           {/* Cart */}
-          <Link to="/cart" className="relative">
+          <Link
+            to="/cart"
+            className={`relative p-1 transition ${
+              isHome
+                ? "text-white hover:text-green-400"
+                : "text-gray-700 dark:text-gray-200 hover:text-green-500"
+            }`}
+          >
             <ShoppingCart className="w-5 h-5" />
 
             {cartItems.length > 0 && (
-              <span className="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1">
+              <span className="absolute -top-2 -right-2 text-xs bg-green-600 text-white rounded-full px-1">
                 {cartItems.length}
               </span>
             )}
@@ -292,9 +334,15 @@ const Navbar = () => {
               <NavLink
                 to="/login"
                 className={({ isActive }) =>
-                  isActive
-                    ? "dark:text-white text-gray-950 b font-medium"
-                    : "dark:text-gray-100 text-gray-950 hover:text-green-500 transition"
+                  `relative px-3 py-1 text-sm transition ${
+                    isHome
+                      ? isActive
+                        ? "text-white"
+                        : "text-gray-200 hover:text-green-400"
+                      : isActive
+                      ? "dark:text-green-400 text-gray-700"
+                      : "dark:hover:text-gray-200 dark:text-green-500 text-gray-700 hover:text-green-500"
+                  }`
                 }
               >
                 Login
