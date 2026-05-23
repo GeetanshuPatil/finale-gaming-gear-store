@@ -318,7 +318,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4 text-sm">
           {token ? (
             <>
-              <span className="dark:text-gray-100 text-gray-700 sm:block">
+              <span className="dark:text-gray-100 text-gray-100 sm:block">
                 Hi, {user?.name}
               </span>
 
