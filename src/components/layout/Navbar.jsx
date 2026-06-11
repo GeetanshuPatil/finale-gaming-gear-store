@@ -46,6 +46,8 @@ const Navbar = () => {
 
   const mode = useSelector(selectThemeMode);
 
+  const isHomePage = location.pathname === "/";
+
   return (
     <nav
       className={`top-0 left-0 w-full z-50 transition ${
@@ -318,8 +320,16 @@ const Navbar = () => {
         <div className="flex items-center gap-4 text-sm">
           {token ? (
             <>
-              <span className="dark:text-gray-100 text-gray-100 sm:block">
-                Hi, {user?.name}
+              <span
+                className={`font-medium ${
+                  isHomePage
+                    ? "text-white"
+                    : mode === "dark"
+                    ? "text-white"
+                    : "text-gray-900"
+                }`}
+              >
+                {user.name}
               </span>
 
               <button
