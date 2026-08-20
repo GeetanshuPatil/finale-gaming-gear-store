@@ -1,7 +1,7 @@
 // features/cart/components/CartSummary.jsx
 
 import { useDispatch, useSelector } from "react-redux";
-import { convertToINR } from "../../../shared/utils/currency";
+
 import { useNavigate } from "react-router-dom";
 import { formatINR } from "../../../shared/utils/currency";
 import { clearBackendCart, resetCart } from "../cartSlice";
@@ -11,6 +11,10 @@ import { selectCartTotal } from "../cartSelectors";
 const CartSummary = () => {
   const token = useSelector((state) => state.auth.token);
   const total = useSelector(selectCartTotal);
+
+  const shippingFee = total > 5000 ? 0 : 99;
+  const finalTotal = total + shippingFee;
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -76,7 +80,9 @@ const CartSummary = () => {
         <div className="flex justify-between">
           <span>Shipping</span>
 
-          <span className="text-gray-700 dark:text-gray-200">Free</span>
+          <span className="text-gray-700 dark:text-gray-200">
+            {shippingFee === 0 ? "Free" : formatINR(shippingFee)}
+          </span>
         </div>
       </div>
 
@@ -87,7 +93,9 @@ const CartSummary = () => {
       <div className="flex justify-between text-sm font-semibold">
         <span className="text-gray-900 dark:text-white">Total</span>
 
-        <span className="font-semibold text-green-500">{formatINR(total)}</span>
+        <span className="font-semibold text-green-500">
+          {formatINR(finalTotal)}
+        </span>
       </div>
 
       {/* CTA */}

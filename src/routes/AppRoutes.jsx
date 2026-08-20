@@ -1,6 +1,6 @@
 // src/routes/AppRoutes.jsx
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, ScrollRestoration } from "react-router-dom";
 
 import Layout from "../components/layout/Layout";
 
@@ -21,10 +21,18 @@ import Checkout from "../features/checkout/pages/Checkout";
 import ProductsPage from "../features/products/pages/ProductsPage";
 import SearchPage from "../features/search/SearchPage";
 
+const RootLayout = () => {
+  return (
+    <>
+      <Layout />
+      <ScrollRestoration />
+    </>
+  );
+};
 
 const router = createBrowserRouter([
   {
-    element: <Layout />, // 👈 parent layout
+    element: <RootLayout />, 
     children: [
       {
         path: "/",

@@ -2,7 +2,7 @@
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { formatINR } from "../../../shared/utils/currency";
 import BackButton from "../../../shared/components/BackButton";
 import { Heart } from "lucide-react";
@@ -34,6 +34,7 @@ const ProductDetails = () => {
   const isWishlisted = wishlistItems.some(
     (item) => item.id === selectedProduct?.id
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchProductById(id));
@@ -191,7 +192,15 @@ const ProductDetails = () => {
 
             {/* Buy Now */}
             <button
-              onClick={() => toast("Coming soon 🚀")}
+              onClick={() =>{
+                dispatch(addToCartLocal(selectedProduct));
+
+                if (token){
+                  dispatch(addCartItem(selectedProduct));
+                }
+
+                navigate("/cart");
+              }}
               className="flex-1 px-6 py-3 rounded-xl  bg-gray-600 text-gray-100 
                      hover:bg-gray-50 hover:text-gray-950 shadow-md transition font-medium"
             >
