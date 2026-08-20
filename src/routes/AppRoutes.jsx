@@ -20,6 +20,7 @@ import HomePage from "../features/home/HomePage";
 import Checkout from "../features/checkout/pages/Checkout";
 import ProductsPage from "../features/products/pages/ProductsPage";
 import SearchPage from "../features/search/SearchPage";
+import ComingSoon from "../features/common/ComingSoon";
 
 const RootLayout = () => {
   return (
@@ -43,6 +44,9 @@ const router = createBrowserRouter([
       },
       {
         path:"/search", element: <SearchPage/>
+      },
+      {
+        path: "/coming_soon", element: <ComingSoon></ComingSoon>
       },
       
       { path: "/product/:id", element: <ProductDetails /> },

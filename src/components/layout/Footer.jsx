@@ -127,7 +127,7 @@ const Footer = () => {
             <ul className="mt-4 space-y-3 text-sm">
               <li>
                 <Link
-                  to="/contact"
+                  to="/coming_soon"
                   className="hover:text-blue-400 transition"
                 >
                   Contact Us
@@ -136,7 +136,7 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to="/orders"
+                  to="/coming_soon"
                   className="hover:text-blue-400 transition"
                 >
                   Track Order
@@ -145,7 +145,7 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to="/privacy"
+                  to="/coming_soon"
                   className="hover:text-blue-400 transition"
                 >
                   Privacy Policy
@@ -154,7 +154,7 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to="/terms"
+                  to="/coming_soon"
                   className="hover:text-blue-400 transition"
                 >
                   Terms & Conditions
