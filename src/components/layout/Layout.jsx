@@ -6,7 +6,6 @@ import Footer from "./Footer";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 
-import { toggleTheme } from "../../features/theme/themeSlice";
 import { selectThemeMode } from "../../features/theme/themeSelector";
 
 import { useSelector } from "react-redux";
