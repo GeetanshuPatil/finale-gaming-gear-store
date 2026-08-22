@@ -36,10 +36,8 @@ const CartSummary = () => {
 
   return (
     <div
-      className="bg-gray-100 dark:bg-gray-900
-             
-             border border-gray-300 dark:border-gray-800
-             
+      className="bg-gray-200 dark:bg-gray-900
+
              rounded-2xl p-5 flex flex-col gap-5 
              
              lg:sticky lg:top-24

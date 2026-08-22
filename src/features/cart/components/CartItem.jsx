@@ -24,9 +24,9 @@ const CartItem = ({ item }) => {
     <div
       className="flex flex-col sm:flex-row sm:items-center justify-between 
              
-             bg-gray-100 dark:bg-gray-900
+             bg-gray-200 dark:bg-gray-900
              
-             border border-gray-300 dark:border-gray-800
+             
              
              rounded-2xl p-4 gap-4 
              

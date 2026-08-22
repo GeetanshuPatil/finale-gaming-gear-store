@@ -33,8 +33,8 @@ const Wishlist = () => {
         {items.map((item) => (
           <div
             key={item.id}
-            className=" bg-gray-100 dark:bg-gradient-to-b from-gray-900 to-gray-950 
-                   border border-gray-300 dark:border-gray-800 rounded-2xl p-4 
+            className=" bg-gray-200 dark:bg-gradient-to-b from-gray-900 to-gray-950 
+                   hover:scale-[1.02] rounded-2xl p-4 
                    hover:shadow-lg hover:shadow-green-500/10 transition"
           >
             <Link to={`/product/${item.id}`}>

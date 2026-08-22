@@ -27,7 +27,7 @@ const ProductCard = ({ product }) => {
   const token = useSelector((state) => state.auth.token);
   const isWishlisted = wishlistItems.some((item) => item.id === product.id);
   return (
-    <div className="relative flex flex-col h-full bg-gray-100 dark:bg-gradient-to-b from-gray-900 to-gray-950 border dark:border-gray-800 border-gray-300 rounded-2xl p-4 hover:shadow-lg hover:shadow-green-500/10 transition group">
+    <div className="relative flex flex-col h-full bg-gray-200 hover:scale-[1.02] dark:bg-gradient-to-b from-gray-900 to-gray-950  rounded-2xl p-4 hover:shadow-lg hover:shadow-green-500/10 transition group">
       {/* ❤️ HEART (FIXED POSITION) */}
       <button
         onClick={(e) => {

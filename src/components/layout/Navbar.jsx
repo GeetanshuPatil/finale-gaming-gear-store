@@ -53,7 +53,7 @@ const Navbar = () => {
       className={`top-0 left-0 w-full z-50 transition ${
         isHome
           ? "absolute bg-transparent border-none"
-          : "sticky dark:bg-gray-900 bg-gray-200 dark:border-b dark:border-gray-800"
+          : "sticky dark:bg-gray-900  bg-gray-200 dark:border-b dark:border-gray-800"
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">

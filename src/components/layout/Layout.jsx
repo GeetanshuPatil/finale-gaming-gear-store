@@ -24,7 +24,7 @@ const Layout = () => {
 }, [mode]);
 
   return (
-    <div className="min-h-screen dark:bg-gradient-to-b bg-gray-200 from-gray-950 via-gray-900 to-gray-950 dark:text-gray-100 flex flex-col">
+    <div className="min-h-screen dark:bg-gradient-to-b bg-gray-50 from-gray-950 via-gray-900 to-gray-950 dark:text-gray-100 flex flex-col">
       <Navbar />
 
       <Toaster
